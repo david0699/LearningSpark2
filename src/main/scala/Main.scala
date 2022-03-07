@@ -1,5 +1,5 @@
 import exercises.chapter2.{ExerciseElQuijote, ExerciseMnM}
-import exercises.chapter3.ExerciseNameAges
+import exercises.chapter3.{ExerciseBlogs, ExerciseNameAges}
 
 object Main extends App{
   implicit val sparkSession = Spark.getSparkSession
@@ -10,7 +10,9 @@ object Main extends App{
 
   //ExerciseMnM.doExerciseMnM()
 
-  ExerciseNameAges.doExercisesNameAges()
+  //ExerciseNameAges.doExercisesNameAges()
+
+  ExerciseBlogs.doExerciseBlogs()
 
   sparkSession.stop()
 
