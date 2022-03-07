@@ -11,11 +11,14 @@ object ExerciseElQuijote {
     //count lines of text
     println(df.count())
 
-    //show first 20 rows of the dataset and first 5 rows of the text
+    //show first 20 rows of the dataset
+    //show first 5 rows of the dataset
+    //show first 20 rows of the dataset without truncation
     df.show()
     df.show(5)
+    df.show(false)
 
-    //catch the firsts n rows in the DataFrame(head() and take() have the same application)
+    //catch the firsts n rows in the DataFrame( head() and take() have the same application )
     val firstRowsWhitHead = df.head(10)
     val firstRowsWhitTake = df.take(5)
 
