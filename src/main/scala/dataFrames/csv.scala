@@ -18,6 +18,13 @@ object csv {
       .csv(path)
   }
 
+  /**
+   *
+   * @param path
+   * @param schema
+   * @param sparkSession
+   * @return
+   */
   def readCsvSchema(path: String, schema: StructType)(implicit sparkSession: SparkSession):DataFrame={
     sparkSession
       .read
@@ -32,10 +39,11 @@ object csv {
    * @param path
    * @param partitions
    */
-  def writeCsv(dataFrame: DataFrame, path: String, partitions: Int): Unit ={
+  def writeCsv(dataFrame: DataFrame, path: String, partitions: Int, header:Boolean): Unit ={
     dataFrame.coalesce(partitions)
       .write
       .mode("overwrite")
+      .option("header", header)
       .csv(path)
   }
 }

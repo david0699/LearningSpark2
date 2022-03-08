@@ -24,7 +24,7 @@ object json {
    * @param path
    * @param sparkSession
    */
-  def readJsonWithoutSchema(path:String)(implicit sparkSession: SparkSession):Unit={
+  def readJsonWithoutSchema(path:String)(implicit sparkSession: SparkSession):DataFrame={
     sparkSession.read
       .option("inferSchema","true")
       .json(path)

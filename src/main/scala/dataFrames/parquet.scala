@@ -20,4 +20,9 @@ object parquet {
         .option("sep",separator)
         .parquet(path)
     }
+
+    def readParquet(path:String)(implicit sparkSession: SparkSession): DataFrame ={
+      sparkSession.read
+        .parquet(path)
+    }
 }

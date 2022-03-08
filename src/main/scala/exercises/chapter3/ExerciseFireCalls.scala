@@ -63,7 +63,7 @@ object ExerciseFireCalls {
     dateFormatDf.show(false)
 
     //Write in some formats
-    csv.writeCsv(fireCallsDf,"src/main/resources/output/csv/fireCalls/",1)
+    csv.writeCsv(fireCallsDf,"src/main/resources/output/csv/fireCalls/",1,true)
     json.writeJson(dateFormatDf,"src/main/resources/output/json/fireCallsDate/",1)
     parquet.writeParquet(commonFireCallsDf,"src/main/resources/output/parquet/commonCalls/",1,"|")
     avro.writeAvro(fireCallsDf,"src/main/resources/output/avro/fireCallsAVRO/",1)
