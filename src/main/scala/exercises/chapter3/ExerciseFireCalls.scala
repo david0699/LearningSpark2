@@ -1,6 +1,6 @@
 package exercises.chapter3
 
-import dataFrames.{csv, json, parquet}
+import dataFrames.{avro, csv, json, parquet}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{desc, to_timestamp, year}
 import org.apache.spark.sql.types.{BooleanType, FloatType, IntegerType, StringType, StructField, StructType}
@@ -66,6 +66,7 @@ object ExerciseFireCalls {
     csv.writeCsv(fireCallsDf,"src/main/resources/output/csv/fireCalls/",1)
     json.writeJson(dateFormatDf,"src/main/resources/output/json/fireCallsDate/",1)
     parquet.writeParquet(commonFireCallsDf,"src/main/resources/output/parquet/commonCalls/",1,"|")
+    avro.writeAvro(fireCallsDf,"src/main/resources/output/avro/fireCallsAVRO/",1)
   }
 
 }
