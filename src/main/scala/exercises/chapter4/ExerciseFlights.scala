@@ -8,7 +8,7 @@ import org.apache.spark.sql.types.TimestampType
 object ExerciseFlights {
   def doExerciseFligths()(implicit sparkSession: SparkSession): Unit ={
     val path = "src/main/resources/chapter4/departuredelays.csv"
-    val fligthsDf = csv.readCsvHeader(path)
+    val fligthsDf = csv.readCsvHeader(path,"true")
     fligthsDf.show()
 
     import sparkSession.implicits._
@@ -43,7 +43,7 @@ object ExerciseFlights {
      ORDER BY origin, delay DESC""").show(10)
 
     //Read files created in chapter3
-    csv.readCsvHeader("src/main/resources/output/csv/fireCalls").show(5)
+    csv.readCsvHeader("src/main/resources/output/csv/fireCalls","true").show(5)
     json.readJsonWithoutSchema("src/main/resources/output/json/fireCallsDate").show(5,false)
     parquet.readParquet("src/main/resources/output/parquet/commonCalls").show(5)
 
