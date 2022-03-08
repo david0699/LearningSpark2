@@ -16,7 +16,7 @@ object ExerciseBlogs {
 
     val path = "src/main/resources/chapter3/blogs.json"
 
-    val blogsDf = json.readJsonWithSchema(path)(schema)
+    val blogsDf = json.readJsonWithSchema(path,schema)
 
     val arrayColumns = blogsDf.columns
     arrayColumns.foreach(a=>print(a + " \n"))
