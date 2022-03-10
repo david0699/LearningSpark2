@@ -37,6 +37,7 @@ object ExerciseWeblogs {
     val statusCodesDf = weblogsDf.select($"Status")
       .groupBy($"Status")
       .agg(count($"Status").as("CountStatus"))
+      .filter($"Status".rlike("[0-9]$"))
       .sort(desc("CountStatus"))
 
     statusCodesDf.show()
@@ -45,6 +46,7 @@ object ExerciseWeblogs {
     val methodsDf = weblogsDf.select($"Method")
       .groupBy($"Method")
       .agg(count($"Method").as("CountMethod"))
+      .filter($"Method".rlike("[A-Z]"))
       .sort(desc("CountMethod"))
 
     methodsDf.show()
@@ -56,6 +58,6 @@ object ExerciseWeblogs {
       .sort(desc("CountResource"))
 
     top1resourceDf.show(1,false)
-    
+
   }
 }
