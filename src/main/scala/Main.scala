@@ -1,6 +1,7 @@
 import exercises.chapter2.{ExerciseElQuijote, ExerciseMnM}
 import exercises.chapter3.{ExerciseBlogs, ExerciseFireCalls, ExerciseNameAges}
 import exercises.chapter4.ExerciseFlights
+import exercises.chapter5.ExerciseEmployeesMySql
 import exercises.weblogs.ExerciseWeblogs
 
 object Main extends App{
@@ -20,7 +21,9 @@ object Main extends App{
 
   //ExerciseFlights.doExerciseFligths()
 
-  ExerciseWeblogs.doExerciseWeblogs()
+  //ExerciseWeblogs.doExerciseWeblogs()
+
+  ExerciseEmployeesMySql.doExerciseEmployeesMySql()
 
   sparkSession.stop()
 
