@@ -10,10 +10,11 @@ object csv {
    * @param sparkSession
    * @return
    */
-  def readCsvHeader(path: String, inferSchema: String)(implicit sparkSession: SparkSession):DataFrame={
+  def readCsvHeader(path: String, inferSchema: String,sep: String)(implicit sparkSession: SparkSession):DataFrame={
     sparkSession
       .read
       .option("header","true")
+      .option("sep",sep)
       .option("inferSchema",inferSchema)
       .csv(path)
   }

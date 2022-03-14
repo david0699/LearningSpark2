@@ -9,7 +9,7 @@ object ExerciseMnM {
   def doExerciseMnM()(implicit sparkSession: SparkSession): Unit ={
     //Read file
     val path :String = "src/main/resources/chapter2/mnm_dataset.csv"
-    val MnMdf = csv.readCsvHeader(path,"true")
+    val MnMdf = csv.readCsvHeader(path,"true",",")
     MnMdf.printSchema()
 
     import sparkSession.implicits._

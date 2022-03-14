@@ -3,3 +3,4 @@
 /.idea
 /target
 /src/main/resources/output/*
+/src/main/resources/weblogs/nasa_aug95.csv

@@ -21,9 +21,9 @@ object Main extends App{
 
   //ExerciseFlights.doExerciseFligths()
 
-  //ExerciseWeblogs.doExerciseWeblogs()
+  ExerciseWeblogs.doExerciseWeblogs()
 
-  ExerciseEmployeesMySql.doExerciseEmployeesMySql()
+  //ExerciseEmployeesMySql.doExerciseEmployeesMySql()
 
   sparkSession.stop()
 
