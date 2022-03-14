@@ -1,7 +1,9 @@
 package exercises.chapter5
 
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{broadcast, lit, year}
+import org.apache.spark.sql.{Column, SparkSession}
+import org.apache.spark.sql.functions.{broadcast, desc, lit, rank, row_number, year}
+import dataFrames.MySql
+import org.apache.spark.sql.expressions.{Window, WindowSpec}
 
 import java.util.Properties
 
@@ -16,82 +18,84 @@ object ExerciseEmployeesMySql {
     val url = "jdbc:mysql://localhost:3306/employees"
 
     //Table employees DataFrame
-    val employeesDf = sparkSession.read.jdbc(url,"employees",prop)
-    employeesDf.show(5)
+    val employeesDf = MySql.readEmployeesTable(url,prop)
 
     //Table departments DataFrame
-    val departmentsDf = sparkSession.read.jdbc(url,"departments",prop)
-    departmentsDf.show()
+    val departmentsDf = MySql.readDepartmentsTable(url, prop)
 
     //Table dept_emp DataFrame
-    val deptEmpDf = sparkSession.read.jdbc(url,"dept_emp",prop)
-    deptEmpDf.show(5)
+    val deptEmpDf = MySql.readDeptEmpTable(url, prop)
 
     //Table dept_manager DataFrame
-    val deptManDf = sparkSession.read.jdbc(url,"dept_manager",prop)
-    deptManDf.show(5)
+    val deptManDf = MySql.readDeptManagerTable(url, prop)
 
     //Table titles DataFrame
-    val titleDf = sparkSession.read.jdbc(url,"titles",prop)
-    titleDf.show()
+    val titleDf = MySql.readTitlesTable(url, prop)
 
     //Table salaries DataFrame
-    val salariesDf = sparkSession.read.jdbc(url,"salaries",prop)
+    val salariesDf = MySql.readSalariesTable(url, prop)
+
 
     //Table managers DataFrame
     val managersDf = employeesDf.join(broadcast(deptManDf),employeesDf("emp_no")<=>deptManDf("emp_no"),"inner")
       .drop(deptManDf("emp_no"))
-      .filter(year($"to_date").equalTo(9999))
-      .drop("from_date","to_date")
 
     val managersDepartmentDf = departmentsDf.join(broadcast(managersDf),departmentsDf("dept_no")<=>managersDf("dept_no"),"inner")
       .drop(managersDf("dept_no"))
 
-    managersDepartmentDf.show()
-
     //Table emp Dataframe
     val empDf = employeesDf.join(broadcast(deptEmpDf),employeesDf("emp_no")<=>deptEmpDf("emp_no"),"inner")
       .drop(deptEmpDf("emp_no"))
-      .filter(year($"to_date").equalTo(9999))
-      .drop("from_date","to_date")
 
     val empDepartmentDf = empDf.join(broadcast(departmentsDf),empDf("dept_no")<=>departmentsDf("dept_no"),"inner")
       .drop(departmentsDf("dept_no"))
 
-    empDepartmentDf.show()
-
     //Table employeesDepartment DataFrame
-    val employeesDepartmentDf = empDepartmentDf.union(managersDepartmentDf.select($"emp_no",$"birth_date",$"first_name",$"last_name",$"gender",$"hire_date",$"dept_no",$"dept_name"))
+    val employeesDepartmentDf = empDepartmentDf.union(managersDepartmentDf.select($"emp_no",$"birth_date",$"first_name",$"last_name",$"gender",$"hire_date",$"dept_no",$"from_date",$"to_date",$"dept_name")).toDF()
+      .withColumn("row_number",row_number.over(getWindow($"emp_no",empDepartmentDf("to_date"))))
+      .filter($"row_number".equalTo(1))
+      .drop($"row_number")
 
-    //Table managers with title DataFrame
-    val employeesWithTitleDf = titleDf.join(broadcast(employeesDepartmentDf),titleDf("emp_no")<=>employeesDepartmentDf("emp_no"),"inner")
+    //Table employees with title DataFrame
+    val employeesWithTitleDf = titleDf.join(broadcast(employeesDepartmentDf), titleDf("emp_no") <=> employeesDepartmentDf("emp_no"), "inner")
       .drop(titleDf("emp_no"))
-      .filter(year($"to_date").equalTo(9999))
-      .drop("from_date","to_date")
-      .dropDuplicates()
-
-    employeesWithTitleDf.show()
+      .withColumn("row_number", row_number.over(getWindow($"emp_no",titleDf("to_date"))))
+      .filter($"row_number".equalTo(1))
+      .drop($"row_number")
+      .select($"title", employeesDepartmentDf("*"))
+      .orderBy($"emp_no")
 
     //Final table Dataframe
     val finalDf = employeesWithTitleDf.join(broadcast(salariesDf),employeesWithTitleDf("emp_no")<=>salariesDf("emp_no"),"inner")
       .drop(salariesDf("emp_no"))
-      .filter(year($"to_date").equalTo(9999))
-      .drop("from_date","to_date")
-      .dropDuplicates()
-      .select($"title"
-        ,$"emp_no"
+      .withColumn("row_number", row_number.over(getWindow($"emp_no",salariesDf("to_date"))))
+      .filter($"row_number".equalTo(1))
+      .select(employeesWithTitleDf("*"),salariesDf("salary"))
+      .select($"emp_no"
+        ,$"title"
         ,$"first_name"
         ,$"last_name"
         ,$"birth_date"
         ,$"gender"
         ,$"hire_date"
         ,$"dept_no"
+        ,$"from_date"
+        ,$"to_date"
         ,$"dept_name"
         ,$"salary")
 
       finalDf.show()
-
-
-
   }
+
+  /**
+   *
+   * @param partitionCol
+   * @param orderCol
+   * @param sparkSession
+   * @return
+   */
+  def getWindow(partitionCol:Column,orderCol:Column)(implicit sparkSession: SparkSession): WindowSpec ={
+    Window.partitionBy(partitionCol).orderBy(orderCol.desc)
+  }
+
 }

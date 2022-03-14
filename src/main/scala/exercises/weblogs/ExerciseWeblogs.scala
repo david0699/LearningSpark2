@@ -2,7 +2,8 @@ package exercises.weblogs
 
 import dataFrames.csv
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{count, desc, regexp_extract, split, when}
+import org.apache.spark.sql.functions.{count, desc, regexp_extract, split, to_timestamp, udf, when}
+import org.apache.spark.sql.types.TimestampType
 
 object ExerciseWeblogs {
   def doExerciseWeblogs()(implicit sparkSession: SparkSession): Unit ={
@@ -51,13 +52,23 @@ object ExerciseWeblogs {
 
     methodsDf.show()
 
-    //
-    val top1resourceDf = weblogsDf.select($"Resource")
+    //Most used resource
+    val top1Row = weblogsDf.select($"Resource")
       .groupBy($"Resource")
       .agg(count($"Resource").as("CountResource"))
       .sort(desc("CountResource"))
+      .first()
 
-    top1resourceDf.show(1,false)
+    val top1Df = sparkSession.sparkContext
+      .parallelize(Seq(top1Row))
+      .map(row => (row.getString(0),row.getLong(1))).toDF("Resource","CountResource")
+
+    top1Df.show()
+
+    val month_map = Map ("Jan" -> 1, "Feb" -> 2, "Mar" -> 3, "Apr" -> 4, "May" -> 5, "Jun" -> 6,
+      "Jul" -> 7, "Aug" -> 8,"Sep" -> 9, "Oct" -> 10, "Nov" -> 11, "Dec" -> 12)
+
+
 
   }
 }
