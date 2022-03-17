@@ -2,7 +2,7 @@ package exercises.census
 
 import dataFrames.csv
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{desc, lit, sum}
+import org.apache.spark.sql.functions.{desc, length, lit, sum}
 
 object ExerciseCensus {
   def doExerciseCensus()(implicit sparkSession: SparkSession): Unit ={
@@ -34,7 +34,7 @@ object ExerciseCensus {
     withColumn5Df.drop($"5").show(5)
 
     //Partition table by DESC_DISTRITO, DESC_BARRIO
-    df.write.mode("overwrite").option("sep",";").option("header","true").partitionBy("DESC_DISTRITO","DESC_BARRIO").csv("/home/jovyan/work/output/padron/")
+    df.write.mode("overwrite").option("sep",";").option("header","true").partitionBy("DESC_DISTRITO","DESC_BARRIO").csv("src/main/resources/output/csv/fireCalls/census")
 
     /*
   Load df in cache
