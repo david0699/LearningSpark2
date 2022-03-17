@@ -2,7 +2,9 @@ package exercises.census
 
 import dataFrames.csv
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{desc, length, lit, sum}
+import org.apache.spark.sql.functions.{desc, length, lit, round, sum, trim}
+import org.apache.spark.sql.expressions.Window
+
 
 object ExerciseCensus {
   def doExerciseCensus()(implicit sparkSession: SparkSession): Unit ={
@@ -10,10 +12,15 @@ object ExerciseCensus {
     import sparkSession.implicits._
 
 
-    val df = csv.readCsvHeader("src/main/resources/census/Rango_Edades_Seccion_202203.csv","true",";")
+    val df = csv.readCsvHeaderIgnoreWhiteSpace("src/main/resources/census/Rango_Edades_Seccion_202203.csv","true",";")
+      .na.fill(0)
+      .withColumn("DESC_DISTRITO",trim($"DESC_DISTRITO"))
+      .withColumn("DESC_BARRIO",trim($"DESC_BARRIO"))
+
+
     df.show(5)
     df.printSchema()
-
+/*
     //Select distinct neighborhood
     val barriosDf = df.select($"DESC_BARRIO").distinct
     barriosDf.show()
@@ -72,20 +79,34 @@ object ExerciseCensus {
       .orderBy($"COD_DISTRITO",$"COD_DIST_BARRIO")
       .show(4)
 
+
+ */
+
     /*
     Show sum of the EspanolesMujeres group by COD_EDAD_INT in BARAJAS,CENTRO,RETIRO
     Add percentage of women in each district with all women
     */
-    val pivotDf = df.filter($"DESC_DISTRITO".equalTo("CENTRO") || $"DESC_DISTRITO".equalTo("BARAJAS") || $"DESC_DISTRITO".equalTo("RETIRO"))
+    val pivotDf = df.filter($"DESC_DISTRITO".equalTo("CENTRO")||$"DESC_DISTRITO".equalTo("BARAJAS")||$"DESC_DISTRITO".equalTo("RETIRO"))
       .groupBy($"COD_EDAD_INT")
       .pivot($"DESC_DISTRITO").sum("EspanolesMujeres")
       .orderBy($"COD_EDAD_INT")
 
     pivotDf.show()
+    pivotDf.printSchema()
 
-    val percentOfTotalWomen = pivotDf.withColumn("potwBARAJAS",$"BARAJAS"/sum($"BARAJAS"))
-      .withColumn("potwCENTRO",$"CENTRO"/sum($"CENTRO"))
-      .withColumn("potwRETIRO",$"RETIRO"/sum($"RETIRO"))
+    /*val window2 = Window.partitionBy($"DESC_DISTRITO",$"DESC_BARRIO")
+    df.withColumn("SumEspanolesHombres",sum($"EspanolesHombres").over(window))
+      .orderBy($"COD_DISTRITO",$"COD_DIST_BARRIO")
+      .show(4)
+*/
+    val percentOfTotalWomen = pivotDf.withColumn("potwBARAJAS",round($"BARAJAS"/sum($"BARAJAS").over(Window.partitionBy()),3))
+      .withColumn("potwCENTRO",round($"CENTRO"/sum($"CENTRO").over(Window.partitionBy()),3))
+      .withColumn("potwRETIRO",round($"RETIRO"/sum($"RETIRO").over(Window.partitionBy()),3))
+
+    percentOfTotalWomen.show(5)
+
+
+
 
   }
 }

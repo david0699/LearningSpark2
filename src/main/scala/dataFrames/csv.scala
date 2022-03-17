@@ -19,6 +19,16 @@ object csv {
       .csv(path)
   }
 
+  def readCsvHeaderIgnoreWhiteSpace(path: String, inferSchema: String,sep: String)(implicit sparkSession: SparkSession):DataFrame={
+    sparkSession
+      .read
+      .option("header","true")
+      .option("sep",sep)
+      .option("inferSchema",inferSchema)
+      .option("ignoreTrailingWhiteSpace","true")
+      .csv(path)
+  }
+
   /**
    *
    * @param path
