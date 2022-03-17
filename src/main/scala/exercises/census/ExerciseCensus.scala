@@ -40,13 +40,13 @@ object ExerciseCensus {
     withColumn5Df.drop($"5").show(5)
 
     //Partition table by DESC_DISTRITO, DESC_BARRIO
-    df.write.mode("overwrite").option("sep",";").option("header","true").partitionBy("DESC_DISTRITO","DESC_BARRIO").csv("src/main/resources/output/csv/fireCalls/census")
+    val dfRepartition = df.repartition($"DESC_DISTRITO",$"DESC_BARRIO")
 
-    /*
-  Load df in cache
-  group by ditrict and neighborhood ,show total of SpanishMen,SpanishWomen,ForeingMen,ForeignWomen ,order by ForeignWomen,ForeingMen
-  Unload df of cache
-  */
+      /*
+    Load df in cache
+    group by ditrict and neighborhood ,show total of SpanishMen,SpanishWomen,ForeingMen,ForeignWomen ,order by ForeignWomen,ForeingMen
+    Unload df of cache
+    */
     df.persist()
     df.select($"DESC_DISTRITO",$"DESC_BARRIO",$"EspanolesHombres",$"EspanolesMujeres",$"ExtranjerosHombres",$"ExtranjerosMujeres")
       .groupBy($"DESC_DISTRITO",$"DESC_BARRIO")
@@ -91,19 +91,19 @@ object ExerciseCensus {
       .orderBy($"COD_EDAD_INT")
 
     pivotDf.show()
-    pivotDf.printSchema()
 
-    /*val window2 = Window.partitionBy($"DESC_DISTRITO",$"DESC_BARRIO")
-    df.withColumn("SumEspanolesHombres",sum($"EspanolesHombres").over(window))
-      .orderBy($"COD_DISTRITO",$"COD_DIST_BARRIO")
-      .show(4)
-*/
+
     val percentOfTotalWomen = pivotDf.withColumn("potwBARAJAS",round($"BARAJAS"/sum($"BARAJAS").over(Window.partitionBy()),3))
       .withColumn("potwCENTRO",round($"CENTRO"/sum($"CENTRO").over(Window.partitionBy()),3))
       .withColumn("potwRETIRO",round($"RETIRO"/sum($"RETIRO").over(Window.partitionBy()),3))
 
     percentOfTotalWomen.show(5)
 
+    //Write df in csv file partition by DESC_DISTRITO,DESC_BARRIO
+    df.write.mode("overwrite").option("sep",";").option("header","true").partitionBy("DESC_DISTRITO","DESC_BARRIO").csv("src/main/resources/output/csv/census")
+
+    //Write df in parquet file partition by DESC_DISTRITO,DESC_BARRIO
+    df.write.mode("overwrite").option("sep",";").option("header","true").partitionBy("DESC_DISTRITO","DESC_BARRIO").parquet("src/main/resources/output/parquet/census")
 
 
 
