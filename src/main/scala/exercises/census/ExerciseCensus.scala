@@ -5,7 +5,6 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions.{desc, length, lit, round, sum, trim}
 import org.apache.spark.sql.expressions.Window
 
-
 object ExerciseCensus {
   def doExerciseCensus()(implicit sparkSession: SparkSession): Unit ={
 
@@ -20,7 +19,7 @@ object ExerciseCensus {
 
     df.show(5)
     df.printSchema()
-/*
+
     //Select distinct neighborhood
     val barriosDf = df.select($"DESC_BARRIO").distinct
     barriosDf.show()
@@ -73,14 +72,14 @@ object ExerciseCensus {
       .dropDuplicates()
       .orderBy($"COD_DISTRITO",$"COD_DIST_BARRIO")
       .show(4)
-    import org.apache.spark.sql.expressions.{Window, WindowSpec}
+
     val window = Window.partitionBy($"DESC_DISTRITO",$"DESC_BARRIO")
     df.withColumn("SumEspanolesHombres",sum($"EspanolesHombres").over(window))
       .orderBy($"COD_DISTRITO",$"COD_DIST_BARRIO")
       .show(4)
 
 
- */
+
 
     /*
     Show sum of the EspanolesMujeres group by COD_EDAD_INT in BARAJAS,CENTRO,RETIRO
