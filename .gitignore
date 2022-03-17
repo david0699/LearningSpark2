@@ -4,3 +4,4 @@
 /target
 /src/main/resources/output/*
 /src/main/resources/weblogs/nasa_aug95.csv
+/src/main/resources/census/Rango_Edades_Seccion_202203.csv
