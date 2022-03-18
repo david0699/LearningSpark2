@@ -35,6 +35,15 @@
             <version>8.0.22</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.databricks/spark-xml -->
+        <dependency>
+            <groupId>com.databricks</groupId>
+            <artifactId>spark-xml_2.12</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+
+
+
     </dependencies>
 
 </project>

@@ -3,6 +3,7 @@ import exercises.chapter2.{ExerciseElQuijote, ExerciseMnM}
 import exercises.chapter3.{ExerciseBlogs, ExerciseFireCalls, ExerciseNameAges}
 import exercises.chapter4.ExerciseFlights
 import exercises.chapter5.ExerciseEmployeesMySql
+import exercises.compareFiles.ExerciseCompareFiles
 import exercises.weblogs.ExerciseWeblogs
 
 object Main extends App{
@@ -26,7 +27,9 @@ object Main extends App{
 
   //ExerciseEmployeesMySql.doExerciseEmployeesMySql()
 
-  ExerciseCensus.doExerciseCensus()
+  //ExerciseCensus.doExerciseCensus()
+
+  ExerciseCompareFiles.doExerciseCompareFiles
 
   sparkSession.stop()
 
