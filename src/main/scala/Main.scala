@@ -25,11 +25,11 @@ object Main extends App{
 
   //ExerciseWeblogs.doExerciseWeblogs()
 
-  //ExerciseEmployeesMySql.doExerciseEmployeesMySql()
+  ExerciseEmployeesMySql.doExerciseEmployeesMySql()
 
   //ExerciseCensus.doExerciseCensus()
 
-  ExerciseCompareFiles.doExerciseCompareFiles
+  //ExerciseCompareFiles.doExerciseCompareFiles
 
   sparkSession.stop()
 

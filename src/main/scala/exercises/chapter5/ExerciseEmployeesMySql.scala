@@ -10,30 +10,24 @@ import java.util.Properties
 object ExerciseEmployeesMySql {
   def doExerciseEmployeesMySql()(implicit sparkSession: SparkSession): Unit ={
     import sparkSession.implicits._
-
-    val prop = new Properties()
-    prop.put("user","root")
-    prop.put("password","password")
-
-    val url = "jdbc:mysql://localhost:3306/employees"
-
+    
     //Table employees DataFrame
-    val employeesDf = MySql.readEmployeesTable(url,prop)
+    val employeesDf = MySql.readTable("employees")
 
     //Table departments DataFrame
-    val departmentsDf = MySql.readDepartmentsTable(url, prop)
+    val departmentsDf = MySql.readTable("departments")
 
     //Table dept_emp DataFrame
-    val deptEmpDf = MySql.readDeptEmpTable(url, prop)
+    val deptEmpDf = MySql.readTable("dept_emp")
 
     //Table dept_manager DataFrame
-    val deptManDf = MySql.readDeptManagerTable(url, prop)
+    val deptManDf = MySql.readTable("dept_manager")
 
     //Table titles DataFrame
-    val titleDf = MySql.readTitlesTable(url, prop)
+    val titleDf = MySql.readTable("titles")
 
     //Table salaries DataFrame
-    val salariesDf = MySql.readSalariesTable(url, prop)
+    val salariesDf = MySql.readTable("salaries")
 
 
     //Table managers DataFrame
