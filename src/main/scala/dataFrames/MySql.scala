@@ -5,27 +5,12 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
 import java.util.Properties
 
 object MySql {
-  def readEmployeesTable(url:String,prop:Properties)(implicit sparkSession: SparkSession): DataFrame ={
-    sparkSession.read.jdbc(url,"employees",prop)
-  }
 
-  def readDepartmentsTable(url:String,prop:Properties)(implicit sparkSession: SparkSession): DataFrame ={
-    sparkSession.read.jdbc(url,"departments",prop)
-  }
+  def readTable(table:String)(implicit sparkSession: SparkSession): DataFrame ={
+    val prop = new Properties()
+    prop.put("user","root")
+    prop.put("password","password")
 
-  def readDeptEmpTable(url:String,prop:Properties)(implicit sparkSession: SparkSession): DataFrame ={
-    sparkSession.read.jdbc(url,"dept_emp",prop)
-  }
-
-  def readDeptManagerTable(url:String,prop:Properties)(implicit sparkSession: SparkSession): DataFrame ={
-    sparkSession.read.jdbc(url,"dept_manager",prop)
-  }
-
-  def readTitlesTable(url:String,prop:Properties)(implicit sparkSession: SparkSession): DataFrame ={
-    sparkSession.read.jdbc(url,"titles",prop)
-  }
-
-  def readSalariesTable(url:String,prop:Properties)(implicit sparkSession: SparkSession): DataFrame ={
-    sparkSession.read.jdbc(url,"salaries",prop)
+    sparkSession.read.jdbc("jdbc:mysql://localhost:3306/employees",table,prop)
   }
 }
