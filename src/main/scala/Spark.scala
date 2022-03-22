@@ -4,7 +4,7 @@ object Spark {
     SparkSession
       .builder()
       .master("local[*]")
-      .appName("retail_db")
+      .appName("LearningSpark2")
       .config("spark.some.config.option","some-value")
       .getOrCreate()
   }
