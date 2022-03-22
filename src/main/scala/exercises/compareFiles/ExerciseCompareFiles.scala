@@ -2,9 +2,6 @@ package exercises.compareFiles
 
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import dataFrames.{csv, xml}
-import org.json4s.JsonDSL.int2jvalue
-
-import scala.collection.mutable.HashMap
 
 
 object ExerciseCompareFiles {
