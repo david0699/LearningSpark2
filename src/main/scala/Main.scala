@@ -5,6 +5,7 @@ import exercises.chapter4.ExerciseFlights
 import exercises.chapter5.ExerciseEmployeesMySql
 import exercises.compareFiles.ExerciseCompareFiles
 import exercises.weblogs.ExerciseWeblogs
+import exercises.testSeqJoin.SeqJoin
 
 object Main extends App{
   implicit val sparkSession = Spark.getSparkSession
@@ -25,7 +26,7 @@ object Main extends App{
 
   //ExerciseWeblogs.doExerciseWeblogs()
 
-  ExerciseEmployeesMySql.doExerciseEmployeesMySql()
+  //ExerciseEmployeesMySql.doExerciseEmployeesMySql()
 
   //ExerciseCensus.doExerciseCensus()
 
