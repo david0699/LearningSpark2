@@ -3,7 +3,7 @@ import exercises.chapter2.{ExerciseElQuijote, ExerciseMnM}
 import exercises.chapter3.{ExerciseBlogs, ExerciseFireCalls, ExerciseNameAges}
 import exercises.chapter4.ExerciseFlights
 import exercises.chapter5.ExerciseEmployeesMySql
-import exercises.compareFiles.ExerciseCompareFiles
+import exercises.compareFiles.{ExerciseCompareFiles1, ExerciseCompareFiles2, ExerciseCompareFiles3}
 import exercises.weblogs.ExerciseWeblogs
 import exercises.testSeqJoin.SeqJoin
 
@@ -30,7 +30,13 @@ object Main extends App{
 
   //ExerciseCensus.doExerciseCensus()
 
-  //ExerciseCompareFiles.doExerciseCompareFiles
+  //SeqJoin.doSeqJoin
+
+  //ExerciseCompareFiles1.doExerciseCompareFiles1
+
+  //ExerciseCompareFiles2.doExerciseCompareFiles2
+
+  ExerciseCompareFiles3.doExerciseCompareFiles3
 
   sparkSession.stop()
 
