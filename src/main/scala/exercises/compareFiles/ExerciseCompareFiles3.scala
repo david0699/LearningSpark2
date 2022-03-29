@@ -16,11 +16,11 @@ object ExerciseCompareFiles3 {
     //Create Dataframe of xml
     val path2 = "src/main/resources/compareFiles/people.xml"
     val dfXml = xml.readXml(path2,"person").select($"id",$"name",$"lastname",$"age",$"weight",$"height",$"sex")
-      .sort($"id").cache()
+      .sort($"id")
 
     //Add hash for all rows
-    val dfCsvHash = dfCsv.withColumn("hashCsv", hash(concat($"id",$"name",$"lastname",$"age",$"weight",$"height",$"sex")))
-    val dfXmlHash = dfXml.withColumn("hashXml", hash(concat($"id",$"name",$"lastname",$"age",$"weight",$"height",$"sex")))
+    val dfCsvHash = dfCsv.withColumn("hashCsv", hash(concat($"id",$"name",$"lastname",$"age",$"weight",$"height",$"sex"))).cache()
+    val dfXmlHash = dfXml.withColumn("hashXml", hash(concat($"id",$"name",$"lastname",$"age",$"weight",$"height",$"sex"))).cache()
 
     //Filter different rows
     val differentRows = dfCsvHash.join(broadcast(dfXmlHash), usingColumns = Seq("id"), "inner")

@@ -22,6 +22,7 @@ object ExerciseWeblogs {
       ,regexp_extract($"request","\\s([A-Z]+/\\w*.\\d*)",1).as("requestProtocol")
       ,$"status"
       ,$"response_size")
+      .cache()
 
     //Select distinct web protocols
     val protocolsDf = weblogsDf.select(when($"requestProtocol".rlike("[a-zA_Z0-9]"),$"requestProtocol").as("requestProtocol"))
