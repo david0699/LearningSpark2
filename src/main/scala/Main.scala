@@ -6,6 +6,7 @@ import exercises.chapter5.ExerciseEmployeesMySql
 import exercises.compareFiles.{ExerciseCompareFiles1, ExerciseCompareFiles2, ExerciseCompareFiles3}
 import exercises.weblogs.ExerciseWeblogs
 import exercises.testSeqJoin.SeqJoin
+import exercises.{Shuntingyard, projectTests}
 
 object Main extends App{
   implicit val sparkSession = Spark.getSparkSession
@@ -36,7 +37,13 @@ object Main extends App{
 
   //ExerciseCompareFiles2.doExerciseCompareFiles2
 
-  ExerciseCompareFiles3.doExerciseCompareFiles3
+  //ExerciseCompareFiles3.doExerciseCompareFiles3
+
+  projectTests.doPrueba
+
+  //Shuntingyard.main(Array())
+
+
 
   sparkSession.stop()
 
