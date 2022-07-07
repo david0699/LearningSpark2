@@ -1,5 +1,7 @@
 package exercises.testSeqJoin
 
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.functions.sum
 import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
@@ -36,6 +38,11 @@ object SeqJoin  {
 
     val column = Seq("familyCod")
 
+    import sparkSession.implicits._
+
+    val window = Window.partitionBy("familyCod")
+
+    sonsDf.withColumn("sum",sum($"age").over(window)).show()
     sonsDf.join(fathersDf,usingColumns = column,"left").show()
     sonsDf.join(fathersDf,usingColumns = column,"left").explain(true)
   }
