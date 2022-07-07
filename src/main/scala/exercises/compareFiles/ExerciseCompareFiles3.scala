@@ -2,7 +2,7 @@ package exercises.compareFiles
 
 import dataFrames.{csv, xml}
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.functions.{broadcast, column, concat, hash}
+import org.apache.spark.sql.functions.{broadcast, column, concat, hash, when}
 
 object ExerciseCompareFiles3 {
   def doExerciseCompareFiles3(implicit sparkSession: SparkSession):Unit={
