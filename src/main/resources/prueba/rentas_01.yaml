@@ -1,0 +1,19 @@
+---
+- id: '001'
+  persona:
+    nombre: david
+    apellidos: gomez
+  jornada: 40
+  empleo: consultant
+- id: '002'
+  persona:
+    nombre: alba
+    apellidos: gomez
+  jornada: 20
+  empleo: consultant
+- id: '003'
+  persona:
+    nombre: anabel
+    apellidos: soria
+  jornada: 35
+  empleo: consultant
