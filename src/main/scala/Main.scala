@@ -7,9 +7,10 @@ import exercises.compareFiles.{ExerciseCompareFiles1, ExerciseCompareFiles2, Exe
 import exercises.weblogs.ExerciseWeblogs
 import exercises.testSeqJoin.SeqJoin
 import exercises.{Shuntingyard, projectTests}
+import org.apache.spark.sql.SparkSession
 
 object Main extends App{
-  implicit val sparkSession = Spark.getSparkSession
+  implicit val sparkSession: SparkSession = Spark.getSparkSession()
 
   sparkSession.sparkContext.setLogLevel("ERROR")
 
